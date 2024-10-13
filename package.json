@@ -1,0 +1,25 @@
+{
+  "name": "zero-school",
+  "version": "1.0.0",
+  "description": "A project for school management",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/0MUHAMMEDIRFAN/zero-school.git"
+  },
+  "keywords": [
+    "LMS",
+    "mern",
+    "school",
+    "classroom"
+  ],
+  "author": "muhammedirfan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/0MUHAMMEDIRFAN/zero-school/issues"
+  },
+  "homepage": "https://github.com/0MUHAMMEDIRFAN/zero-school#readme"
+}
