@@ -4,7 +4,8 @@
   "description": "A project for school management",
   "main": "index.js",
   "scripts": {
-    "test": "npm run test"
+    "test": "npm run test",
+    "dev": "tsc && node ./dist/app.js"
   },
   "repository": {
     "type": "git",
@@ -21,5 +22,19 @@
   "bugs": {
     "url": "https://github.com/0MUHAMMEDIRFAN/zero-school/issues"
   },
-  "homepage": "https://github.com/0MUHAMMEDIRFAN/zero-school#readme"
+  "homepage": "https://github.com/0MUHAMMEDIRFAN/zero-school#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.7.1",
+    "socket.io": "^4.8.0"
+  },
+  "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
+    "@types/express": "^5.0.0",
+    "@types/jsonwebtoken": "^9.0.7",
+    "typescript": "^5.6.3"
+  }
 }
