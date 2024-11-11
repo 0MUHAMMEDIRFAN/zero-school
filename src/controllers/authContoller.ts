@@ -1,19 +1,15 @@
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
 import User from '../models/userModel';
-import dotenv from 'dotenv'
+import userController from './userController'
+import { generateToken } from '../utils/generateToken';
+import { responseError } from '../utils/resErrorHandle';
 
-dotenv.config();
-const JWT_SECRET: string = process.env.JWT_SECRET || '';
 
-const generateToken = (id: string | unknown, role: string): string => {
-    return jwt.sign({ id, role }, JWT_SECRET, { expiresIn: '1h' })
-}
 
 const login = async (req: Request, res: Response): Promise<any> => {
-    const { email, password } = req.body;
+    const { phone, password } = req.body;
     try {
-        let user = await User.findOne({ email });
+        let user = await User.findOne({ phone });
         if (!user) {
             return res.status(400).json({ message: "User does not exist" })
         }
@@ -29,35 +25,11 @@ const login = async (req: Request, res: Response): Promise<any> => {
 
         // Login User
     } catch (error) {
-        console.log(error)
-        return res.status(500).json({ message: "Server error" })
+        responseError(res, error);
     }
 }
 
-const register = async (req: Request, res: Response): Promise<any> => {
-    const { name, email, password, role } = req.body;
-    try {
-        let user = await User.findOne({ email })
-        if (user) {
-            return res.status(400).json({ message: "User Already Registered" })
-        }
+const register = userController.createUser;
+const { isUserExist } = userController;
 
-        // Create New User
-        user = new User({ name, email, password, role });
-
-        await user.save();
-
-        // let userId = String(user._id)
-
-        // Generate JWT TOKEN
-        const token = generateToken(user._id, user.role);
-
-        res.status(201).json({ token, role: user.role });
-
-    } catch (error: any) {
-        console.log(error)
-        return res.status(500).json({ error: error.message || "", message: error._message || "Server error" });
-    }
-}
-
-export default { login, register };
+export default { login, register, isUserExist };

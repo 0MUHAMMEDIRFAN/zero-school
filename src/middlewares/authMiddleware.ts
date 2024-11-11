@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken"
 import User, { IUser } from "../models/userModel"
+import { responseError } from "../utils/resErrorHandle";
 
 export interface AuthRequest extends Request {
     user: IUser;
@@ -19,19 +20,19 @@ export const protect = async (req: AuthRequest, res: Response, next: NextFunctio
 
             next();
         } catch (error) {
-            res.status(401).json({ message: "Not authorized, token failed" })
+            responseError(res, "", 401, "Not authorized, token failed");
         }
     }
     if (!token) {
-        res.status(401).json({ message: 'Not authorized, no token' })
+        responseError(res, "", 401, 'Not authorized, no token');
     }
 
 }
 
-export const authorize = async (...roles: string[]): Promise<unknown> => {
+export const authorize = (...roles: string[]) => {
     return (req: AuthRequest, res: Response, next: NextFunction) => {
-        if (!roles.includes(req.user.role)) {
-            return res.status(403).json({ message: "You don't have permission to perform this action" })
+        if (!roles.includes(req.user.role)) { // the user is attaching in the protect middleware
+            return responseError(res, '', 403, "You don't have permission to perform this action");
         }
         next();
     }
