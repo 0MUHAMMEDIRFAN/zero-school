@@ -1,6 +1,7 @@
 import express from 'express';
 import { protect, authorize } from '../middlewares/authMiddleware';
 import userController from '../controllers/userController';
+import teacherController from '../controllers/teacherController';
 
 const router = express.Router();
 
@@ -15,7 +16,7 @@ router.delete('/user', protect, authorize('admin'), userController.deleteUser)
 // @route GET /api/teachers
 // @desc Get all teachers
 // @access Protected, Teachers and Admins only
-router.get('/teachers', protect, userController.getAllTeachers)
+router.get('/teachers', protect, teacherController.getAllTeachers)
 
 // module.exports = router;
 export default router

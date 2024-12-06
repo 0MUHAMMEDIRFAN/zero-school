@@ -1,0 +1,31 @@
+version : '3.8'
+
+services:
+  app:
+    build: .
+    container_name: zero-school-server
+    ports:
+      - "3010:3020"
+    environment:
+      BASE_URL: http://localhost
+      PORT: 3020
+      JWT_SECRET: 6294319379bf102077d29187e3d76b371a321f9fdb122d2fcea5565e1e8a47db
+      DB_HOST: mongodb://mongo:27017/
+      DB_NAME: zero-school
+
+    depends_on:
+      - mongo
+
+    volumes:
+      - mongo-data:/data/db
+      
+  mongo:
+    image: mongo:7.0.2
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+
+volumes:
+  mongo-data:
