@@ -8,10 +8,10 @@ const router = express.Router();
 // @route GET /api/users
 // @desc Get all users
 // @access Protected, Admins only
-router.get('/users', protect, authorize('admin'), userController.getAllUsers)
-router.get('/user/:userId', protect, authorize('admin'), userController.getUser)
-router.put('/user', protect, authorize('admin'), userController.updateUser)
-router.delete('/user', protect, authorize('admin'), userController.deleteUser)
+router.get('/users', protect, userController.getAllUsers)
+router.get('/user/:userId', protect, userController.getUser)
+router.put('/user', protect, userController.updateUser)
+router.delete('/user', protect, userController.deleteUser)
 
 // @route GET /api/teachers
 // @desc Get all teachers

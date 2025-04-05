@@ -1,5 +1,6 @@
 import mongoose, { Schema, Document, Model } from 'mongoose';
 import bcrypt from 'bcryptjs';
+import { IRole } from './roleModel';
 
 // Define the User interface and the UserSchema
 
@@ -8,9 +9,7 @@ export interface IUser extends Document {
     email: string;
     phone: number;
     password: string;
-    role: "admin" | "teacher" | "student";
-    student?: mongoose.Types.ObjectId | unknown;
-    teacher?: mongoose.Types.ObjectId | unknown;
+    role: IRole;
     matchPassword(enteredPassword: string): Promise<boolean>;
     createdAt?: Date;
     updatedAt?: Date;
@@ -22,9 +21,7 @@ const UserSchema: Schema<IUser> = new mongoose.Schema({
     email: { type: String, required: true, index: true },
     phone: { type: Number, required: true, index: true },
     password: { type: String, required: true },
-    role: { type: String, enum: ['admin', 'teacher', 'student'], default: 'student' },
-    student: { type: mongoose.Types.ObjectId, ref: 'Student' },
-    teacher: { type: mongoose.Types.ObjectId, ref: 'Teacher' },
+    role: { type: mongoose.Types.ObjectId, ref: 'Role' },
 }, { timestamps: true })
 
 // Hash Password before saving to database

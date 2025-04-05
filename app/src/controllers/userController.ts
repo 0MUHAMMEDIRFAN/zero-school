@@ -5,6 +5,7 @@ import { SOCKET_EVENTS } from '../config/socketEvents';
 import { generateToken } from '../utils/generateToken';
 import { responseError } from '../utils/resErrorHandle';
 import { checkValidObjectId } from '../utils/checkValidObjectId';
+import { findDocs } from '../utils/findDocs';
 
 const createUser = async (req: Request, res: Response): Promise<any> => {
     const { name, email, password, role, phone } = req.body;
@@ -36,13 +37,13 @@ const createUser = async (req: Request, res: Response): Promise<any> => {
 }
 
 const getAllUsers = async (req: Request, res: Response): Promise<void> => {
-    const page = parseInt(req.query.page as string) || 1;
-    const limit = parseInt(req.query.limit as string) || 10;
-    const sortField = req.query.sortField as string || null;
+
     try {
-        const totalUsers = await User.countDocuments({});
-        const users = await User.find({}).select('-password').sort(sortField).skip((page - 1) * limit).limit(limit);
-        res.json({ data: users, meta: { page, limit, total: totalUsers } });
+        // const totalUsers = await User.countDocuments({});
+        // const users = await User.find({}).select('-password').sort(sortField).skip((page - 1) * limit).limit(limit);
+        const data = await findDocs(req, User, "-password")
+        res.json(data)
+        // res.json({ data: users, meta: { page, limit, total: totalUsers } });
 
     } catch (error) {
         responseError(res, error);

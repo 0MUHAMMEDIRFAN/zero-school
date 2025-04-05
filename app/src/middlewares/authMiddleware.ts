@@ -16,22 +16,22 @@ export const protect = async (req: AuthRequest, res: Response, next: NextFunctio
             const decoded = jwt.verify(token, process.env.JWT_SECRET || "") as JwtPayload;
 
             // Attach the user to the request
-            req.user = await User.findById(decoded.id).select('-password');
+            req.user = await User.findById(decoded.id).populate("role").select('-password');
 
             next();
         } catch (error) {
             responseError(res, "", 401, "Not authorized, token failed");
         }
     }
-    if (!token) {
+    else if (!token) {
         responseError(res, "", 401, 'Not authorized, no token');
     }
 
 }
 
-export const authorize = (...roles: string[]) => {
+export const authorize = (permission: string) => {
     return (req: AuthRequest, res: Response, next: NextFunction) => {
-        if (!roles.includes(req.user.role)) { // the user is attaching in the protect middleware
+        if (!req.user.role.permissions.includes(permission)) { // the user is attaching in the protect middleware
             return responseError(res, '', 403, "You don't have permission to perform this action");
         }
         next();

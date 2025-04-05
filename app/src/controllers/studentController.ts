@@ -13,7 +13,7 @@ const createStudent = async (req: Request, res: Response): Promise<void> => {
             student.user = user._id;
         } else {
             user = new User({ phone, role: "student" });
-            user.student = student._id;
+            // user.student = student._id;
             await user.save();
             student.user = user._id;
         }

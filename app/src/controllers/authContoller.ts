@@ -8,10 +8,16 @@ import { responseError } from '../utils/resErrorHandle';
 
 const login = async (req: Request, res: Response): Promise<any> => {
     const { phone, password } = req.body;
+
+    // Check if phone and password are provided
+    if (!phone || !password) {
+        return res.status(400).json({ message: "Phone and password are required" });
+    }
+
     try {
         let user = await User.findOne({ phone });
         if (!user) {
-            return res.status(400).json({ message: "User does not exist" })
+            return res.status(400).json({ message: "User not found" })
         }
 
         // Compare password
